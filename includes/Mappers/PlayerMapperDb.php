@@ -64,20 +64,25 @@ class PlayerMapperDb
         }
     }
 
-    private function insert(Player $player)
+    public function insert(Player $player)
     {
-        $db = Db::obtain();
-        $data = array('account_id' => Player::convertId($player->get('steamid')));
-        $data = array_merge($data, $player->getDataArray());
-        $db->insertPDO(Db::realTablename('users'), $data);
+        Db::obtain()->insertPDO(Db::realTablename('users'), $this->prepareDataToSave($player));
     }
 
-    private function update(Player $player)
+    public function update(Player $player)
     {
-        $db = Db::obtain();
-        $data = array('account_id' => Player::convertId($player->get('steamid')));
-        $data = array_merge($data, $player->getDataArray());
-        $db->updatePDO(Db::realTablename('users'), $data, array('steamid' => $player->get('steamid')));
+        Db::obtain()->updatePDO(Db::realTablename('users'), $this->prepareDataToSave($player), array('steamid' => $player->get('steamid')));
+    }
+
+    protected function prepareDataToSave(Player $player)
+    {
+        $account_id = $player->get('account_id');
+        $data = $player->getDataArray();
+        if (!$account_id) {
+            $data = array('account_id' => Player::convertId($player->get('steamid')));
+            $data = array_merge($data, $player->getDataArray());
+        }
+        return $data;
     }
 
     /**

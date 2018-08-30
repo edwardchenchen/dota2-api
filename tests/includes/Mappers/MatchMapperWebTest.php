@@ -17,6 +17,9 @@ class MatchMapperWebTest extends PHPUnit_Framework_TestCase
         );
         $mapper = new MatchMapperWeb($matchId);
         $match = $mapper->load();
+        while (!$match) {
+            $match = $mapper->load();
+        }
         $this->assertInstanceOf('Dota2Api\Models\Match', $match);
         foreach ($expectedMatchInfo as $k => $v) {
             $this->assertEquals($match->get($k), $v);
@@ -73,6 +76,7 @@ class MatchMapperWebTest extends PHPUnit_Framework_TestCase
 
         $picksBans = $match->getAllPicksBans();
         $this->assertInternalType('array', $picksBans);
+        $this->assertGreaterThan(0, count($picksBans));
         $fl = true;
         foreach ($picksBans as $r) {
             if (!in_array($r['is_pick'], array('1', '0'), true)) {

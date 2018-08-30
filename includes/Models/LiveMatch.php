@@ -26,6 +26,50 @@ class LiveMatch extends Match
      */
     protected $_league_id;
     /**
+     * @var int
+     */
+    protected $_league_tier;
+    /**
+     * @var int
+     */
+    protected $_series_id;
+    /**
+     * @var int
+     */
+    protected $_game_number;
+    /**
+     * @var int
+     */
+    protected $_stream_delay_s;
+    /**
+     * @var int
+     */
+    protected $_radiant_series_wins;
+    /**
+     * @var int
+     */
+    protected $_dire_series_wins;
+    /**
+     * @var int
+     */
+    protected $_series_type;
+    /**
+     * @var int
+     */
+    protected $_league_series_id;
+    /**
+     * @var int
+     */
+    protected $_league_game_id;
+    /**
+     * @var string
+     */
+    protected $_stage_name;
+    /**
+     * @var int
+     */
+    protected $_roshan_respawn_timer;
+    /**
      * @var array
      */
     protected $_radiant_team = array();
@@ -81,5 +125,17 @@ class LiveMatch extends Match
     {
         $this->_dire_team[$player_info['account_id']] = $player_info;
         return $this;
+    }
+
+    public function getDataArray()
+    {
+        $data = get_object_vars($this);
+        $ret = array();
+        foreach ($data as $key => $value) {
+            if (!is_array($value) && !is_null($value)) {
+                $ret[ltrim($key, '_')] = $value;
+            }
+        }
+        return $ret;
     }
 }

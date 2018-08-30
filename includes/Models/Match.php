@@ -148,6 +148,34 @@ class Match extends StatObject
      */
     protected $_dire_team_complete;
     /**
+     * @var int
+     */
+    protected $_engine;
+    /**
+     * @var int
+     */
+    protected $_radiant_captain;
+    /**
+     * @var int
+     */
+    protected $_dire_captain;
+    /**
+     * @var int
+     */
+    protected $_flags;
+    /**
+     * @var int
+     */
+    protected $_radiant_score;
+    /**
+     * @var int
+     */
+    protected $_dire_score;
+    /**
+     * @var int
+     */
+    protected $_pre_game_duration;
+    /**
      * Array of Slot objects (should be 10)
      * @var Slot[]
      */
@@ -259,6 +287,16 @@ class Match extends StatObject
     }
 
     /**
+     * @param array $data
+     * @return Match
+     */
+    public function addPickBan($data)
+    {
+        array_push($this->_picks_bans, $data);
+        return $this;
+    }
+
+    /**
      * Set list of slots for current match
      *
      * @param Slot[] $slots
@@ -268,14 +306,5 @@ class Match extends StatObject
     {
         $this->_slots = $slots;
         return $this;
-    }
-
-    /**
-     * Just empty construct.
-     * Don't use me directly!
-     */
-    public function __construct()
-    {
-
     }
 }
